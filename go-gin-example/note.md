@@ -28,3 +28,9 @@
 
 - 相同包下的init函数: 按照源文件编译顺序决定执行顺序（默认按文件名排序）
 - 不同包下的init函数: 按照包导入的依赖关系决定先后顺序
+
+### Go gin FileSystem
+
+go 对filesystem进行了封装只需要在 router层增加一行代码即可开启
+
+> r.StaticFS("/upload/images", http.Dir(upload.GetImageFullPath()))
