@@ -16,7 +16,6 @@
 - ENTRYPOINT 指定容器启动程序及参数
     exec格式: <ENTRYPOINT> "<CMD>"
     shell 格式: ENTRYPOINT ["curl", "-s", "http://ip.cn"]
-    
 
 ### GORM 
 > GORM itself is powered by Callbacks, so you could fully customize GORM as you want
@@ -24,3 +23,8 @@
 - 删除现有的回调
 - 替换现有的回调
 - 注册回调顺序
+
+在go中 当存在多个init函数时，执行顺序为:
+
+- 相同包下的init函数: 按照源文件编译顺序决定执行顺序（默认按文件名排序）
+- 不同包下的init函数: 按照包导入的依赖关系决定先后顺序

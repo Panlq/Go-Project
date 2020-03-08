@@ -3,11 +3,12 @@ package util
 import (
 	"time"
 
-	jwt "github.com/dgrijalva/jwt-go"
 	"go-gin-example/pkg/setting"
+
+	jwt "github.com/dgrijalva/jwt-go"
 )
 
-var jwtSecret = []byte(setting.JwtSecret)
+var jwtSecret = []byte(setting.AppSetting.JwtSecret)
 
 type Claims struct {
 	Username string `json:"username"`
@@ -24,7 +25,7 @@ func GenerateToken(username, password string) (string, error) {
 		password,
 		jwt.StandardClaims{
 			ExpiresAt: expireTime.Unix(),
-			Issuer: "gin-go-example",
+			Issuer:    "gin-go-example",
 		},
 	}
 
@@ -35,11 +36,11 @@ func GenerateToken(username, password string) (string, error) {
 }
 
 func ParseToken(token string) (*Claims, error) {
-	tokenClaims, err := jwt.ParseWithClaims(token, &Claims{}, func(token *jwt.Token) (interface {}, error) {
+	tokenClaims, err := jwt.ParseWithClaims(token, &Claims{}, func(token *jwt.Token) (interface{}, error) {
 		return jwtSecret, nil
 	})
 
-	if tokenClaims !=nil {
+	if tokenClaims != nil {
 		if claims, ok := tokenClaims.Claims.(*Claims); ok && tokenClaims.Valid {
 			return claims, nil
 		}
