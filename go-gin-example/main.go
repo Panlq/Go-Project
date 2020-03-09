@@ -5,8 +5,10 @@ import (
 	"net/http"
 
 	"go-gin-example/models"
+	"go-gin-example/pkg/gredis"
 	"go-gin-example/pkg/logging"
 	"go-gin-example/pkg/setting"
+
 	"go-gin-example/routers"
 )
 
@@ -14,6 +16,7 @@ func main() {
 	setting.Setup()
 	models.Setup()
 	logging.Setup()
+	gredis.Setup()
 
 	// router := gin.Default()
 	// router.GET("/test", func(c *gin.Context) {
