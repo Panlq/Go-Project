@@ -5,9 +5,12 @@ import (
 	"image/draw"
 	"image/jpeg"
 	"os"
+	"io/ioutil"
+	"github.com/golang/freetype"
 
 	"go-gin-example/pkg/qrcode"
 	"go-gin-example/pkg/file"
+	"go-gin-example/pkg/setting"
 )
 
 type ArticlePoster struct {
@@ -74,6 +77,64 @@ func NewArticlePosterBg(name string, ap *ArticlePoster, rect *Rect, pt *Pt) *Art
     }
 }
 
+
+// 增加绘制文字的逻辑
+type DrawText struct {
+    JPG    draw.Image
+    Merged *os.File
+
+    Title string
+    X0    int
+    Y0    int
+    Size0 float64
+
+    SubTitle string
+    X1       int
+    Y1       int
+    Size1    float64
+}
+
+func (a *ArticlePosterBg) DrawPoster(d *DrawText, fontName string) error {
+	fontSource := setting.AppSetting.RuntimeRootPath + setting.AppSetting.FontSavePath + fontName
+	fontSourceBytes, err := ioutil.ReadFile(fontSource)
+	if err != nil {
+		return err
+	}
+
+	trueTypeFont, err := freetype.ParseFont(fontSourceBytes)
+	if err != nil {
+		return err
+	}
+
+	fc := freetype.NewContext()
+    fc.SetDPI(72)
+    fc.SetFont(trueTypeFont)
+    fc.SetFontSize(d.Size0)
+    fc.SetClip(d.JPG.Bounds())
+    fc.SetDst(d.JPG)
+    fc.SetSrc(image.Black)
+
+    pt := freetype.Pt(d.X0, d.Y0)
+    _, err = fc.DrawString(d.Title, pt)
+    if err != nil {
+        return err
+	}
+	
+	fc.SetFontSize(d.Size1)
+    _, err = fc.DrawString(d.SubTitle, freetype.Pt(d.X1, d.Y1))
+    if err != nil {
+        return err
+    }
+
+	err = jpeg.Encode(d.Merged, d.JPG, nil)
+	
+    if err != nil {
+        return err
+    }
+
+    return nil
+}
+
 func (a *ArticlePosterBg) Generate() (string, string, error) {
 	// 获取二维码存储路径
 	fullPath := qrcode.GetQrCodeFullPath()
@@ -126,8 +187,25 @@ func (a *ArticlePosterBg) Generate() (string, string, error) {
 		// 在已绘制背景图的 RGBA 图像上，在指定 Point 上绘制二维码图像（qrF）
 		draw.Draw(jpg, jpg.Bounds(), qrImage, qrImage.Bounds().Min.Sub(image.Pt(a.Pt.X, a.Pt.Y)), draw.Over)
 
+		err = a.DrawPoster(&DrawText{
+			JPG: jpg,
+			Merged: mergedF,
+			Title: "Golang Gin",
+			X0: 80,
+			Y0: 160,
+			Size0: 42,
+			SubTitle: "--Jon, Pan",
+			X1: 320,
+			Y1: 220,
+			Size1: 36,
+		}, "msyhbd.ttc")
+
+		if err != nil {
+			return "", "", err
+		}
+
 		// 将绘制好的 RGBA 图像以 JPEG 4：2：0 基线格式写入合并后的图像文件（mergedF）
-		jpeg.Encode(mergedF, jpg, nil)
+		// jpeg.Encode(mergedF, jpg, nil)
 	}
 
 	return fileName, path, nil
