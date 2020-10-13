@@ -3,7 +3,7 @@
  * @Date: 2020-10-12 17:07:05
  * @Description: Some desc
  * @LastEditors: panlq01@mingyuanyun.com
- * @LastEditTime: 2020-10-12 19:17:17
+ * @LastEditTime: 2020-10-13 17:21:01
  */
 package models
 
@@ -23,7 +23,7 @@ type Article struct {
 
 func ExistArticleByID(id int) bool {
 	var article Article
-	db.Select("id").Where("id = ?", id).First(&article)
+	db.Select("id").Where("id = ? AND deleted_on = ? ", id, 0).First(&article)
 
 	if article.ID > 0 {
 		return true
@@ -45,14 +45,14 @@ func GetArticles(pageNum int, pageSize int, maps interface{}) (articles []Articl
 }
 
 func GetArticle(id int) (article Article) {
-	db.Where("id = ?", id).First(&article)
+	db.Where("id = ? AND deleted_on = ?", id, 0).First(&article)
 	db.Model(&article).Related(&article.Tag)
 
 	return
 }
 
 func EditArticle(id int, data interface{}) bool {
-	db.Model(&Article{}).Where("id = ?", id).Updates(data)
+	db.Model(&Article{}).Where("id = ? AND deleted_on = ?", id, 0).Updates(data)
 
 	return true
 }

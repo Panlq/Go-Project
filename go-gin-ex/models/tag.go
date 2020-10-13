@@ -44,7 +44,7 @@ func GetTagTotal(maps interface{}) (int, error) {
 func ExistTagByName(name string) (bool, error) {
 	var tag Tag
 
-	err := db.Select("id").Where("name = ?", name).First(&tag).Error
+	err := db.Select("id").Where("name = ? AND deleted_on = ? ", name, 0).First(&tag).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return false, err
 	}
@@ -72,7 +72,7 @@ func AddTag(name string, state int, createdBy string) error {
 
 func ExistTagByID(id int) (bool, error) {
 	var tag Tag
-	err := db.Select("id").Where("id = ? ", id).First(&tag).Error
+	err := db.Select("id").Where("id = ? AND deleted_on = ? ", id, 0).First(&tag).Error
 
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return false, err
@@ -94,7 +94,7 @@ func DeleteTag(id int) error {
 }
 
 func EditTag(id int, data interface{}) error {
-	if err := db.Model(&Tag{}).Where("id = ? ", id).Updates(data).Error; err != nil {
+	if err := db.Model(&Tag{}).Where("id = ? AND deleted_on = ? ", id, 0).Updates(data).Error; err != nil {
 		return err
 	}
 

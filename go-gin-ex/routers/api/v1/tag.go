@@ -3,7 +3,7 @@
  * @Date: 2020-10-12 18:50:47
  * @Description: Some desc
  * @LastEditors: panlq01@mingyuanyun.com
- * @LastEditTime: 2020-10-13 15:39:28
+ * @LastEditTime: 2020-10-13 16:28:42
  */
 package v1
 
@@ -19,7 +19,13 @@ import (
 	"github.com/unknwon/com"
 )
 
-//获取多个文章标签
+// @Summary 新增文章标签
+// @Produce json
+// @Param name query string true "Name"
+// @Param state query string true "State"
+// @Param created_by query int false "CreatedBy"
+// @Success 200 {string} json "{"code":200,"data":{},"msg":"ok"}"
+// @Router /api/v1/tags [post]
 func GetTags(c *gin.Context) {
 	name := c.Query("name")
 
