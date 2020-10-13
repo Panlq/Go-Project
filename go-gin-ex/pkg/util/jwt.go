@@ -3,7 +3,7 @@
  * @Date: 2020-10-12 19:19:20
  * @Description: Some desc
  * @LastEditors: panlq01@mingyuanyun.com
- * @LastEditTime: 2020-10-13 15:44:16
+ * @LastEditTime: 2020-10-13 18:42:22
  */
 package util
 
@@ -14,7 +14,7 @@ import (
 	"github.com/dgrijalva/jwt-go"
 )
 
-var jwtSecret = []byte(setting.JwtSecret)
+var jwtSecret = []byte(setting.AppSetting.JwtSecret)
 
 type Claims struct {
 	Username string `json:"username"`

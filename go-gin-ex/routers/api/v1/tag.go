@@ -3,7 +3,7 @@
  * @Date: 2020-10-12 18:50:47
  * @Description: Some desc
  * @LastEditors: panlq01@mingyuanyun.com
- * @LastEditTime: 2020-10-13 16:28:42
+ * @LastEditTime: 2020-10-13 18:43:01
  */
 package v1
 
@@ -44,7 +44,7 @@ func GetTags(c *gin.Context) {
 
 	code := e.SUCCESS
 
-	data["lists"], _ = models.GetTags(util.GetPage(c), setting.PageSize, maps)
+	data["lists"], _ = models.GetTags(util.GetPage(c), setting.AppSetting.PageSize, maps)
 	data["total"], _ = models.GetTagTotal(maps)
 
 	c.JSON(http.StatusOK, gin.H{

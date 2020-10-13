@@ -3,13 +3,15 @@
  * @Date: 2020-10-12 16:48:23
  * @Description: Some desc
  * @LastEditors: panlq01@mingyuanyun.com
- * @LastEditTime: 2020-10-12 18:51:40
+ * @LastEditTime: 2020-10-13 18:49:11
  */
 
 package routers
 
 import (
 	"go-gin-ex/pkg/setting"
+	"go-gin-ex/pkg/upload"
+	"net/http"
 
 	"go-gin-ex/middleware/jwt"
 	"go-gin-ex/routers/api"
@@ -24,10 +26,15 @@ func InitRouter() *gin.Engine {
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
 
-	gin.SetMode(setting.RunMode)
+	gin.SetMode(setting.ServerSetting.RunMode)
+
+	r.StaticFS("/upload/images", http.Dir(upload.GetImageFullPath()))
 
 	// 获取token
 	r.GET("/auth", api.GetAuth)
+
+	// 上传图片
+	r.POST("/upload", api.UploadImage)
 
 	apiv1 := r.Group("/api/v1")
 	apiv1.Use(jwt.JWT())

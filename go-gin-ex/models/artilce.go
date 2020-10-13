@@ -3,7 +3,7 @@
  * @Date: 2020-10-12 17:07:05
  * @Description: Some desc
  * @LastEditors: panlq01@mingyuanyun.com
- * @LastEditTime: 2020-10-13 17:21:01
+ * @LastEditTime: 2020-10-13 17:23:52
  */
 package models
 
@@ -79,14 +79,8 @@ func DeleteArticle(id int) bool {
 	return true
 }
 
-// func (article *Article) BeforeCreate(scope *gorm.Scope) error {
-// 	scope.SetColumn("CreatedOn", time.Now().Unix())
+func CleanAllArticle() bool {
+	db.Unscoped().Where("deleted_on != ? ", 0).Delete(&Article{})
 
-// 	return nil
-// }
-
-// func (article *Article) BeforeUpdate(scope *gorm.Scope) error {
-// 	scope.SetColumn("ModifiedOn", time.Now().Unix())
-
-// 	return nil
-// }
+	return true
+}

@@ -3,7 +3,7 @@
  * @Date: 2020-10-12 16:58:47
  * @Description: Some desc
  * @LastEditors: panlq01@mingyuanyun.com
- * @LastEditTime: 2020-10-13 15:40:41
+ * @LastEditTime: 2020-10-13 18:42:51
  */
 
 package v1
@@ -82,7 +82,7 @@ func GetArticles(c *gin.Context) {
 	if !valid.HasErrors() {
 		code = e.SUCCESS
 		// 此写法不好, 两次查询
-		data["lists"] = models.GetArticles(util.GetPage(c), setting.PageSize, maps)
+		data["lists"] = models.GetArticles(util.GetPage(c), setting.AppSetting.PageSize, maps)
 		data["total"] = models.GetArticleTotal(maps)
 
 	} else {

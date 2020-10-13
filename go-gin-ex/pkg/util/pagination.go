@@ -3,7 +3,7 @@
  * @Date: 2020-10-12 16:29:01
  * @Description: Some desc
  * @LastEditors: panlq01@mingyuanyun.com
- * @LastEditTime: 2020-10-12 16:34:43
+ * @LastEditTime: 2020-10-13 18:42:32
  */
 
 package util
@@ -20,7 +20,7 @@ func GetPage(c *gin.Context) int {
 	page, _ := com.StrTo(c.Query("page")).Int()
 
 	if page > 0 {
-		result = (page - 1) * setting.PageSize
+		result = (page - 1) * setting.AppSetting.PageSize
 	}
 
 	return result
