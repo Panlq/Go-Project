@@ -141,7 +141,7 @@ func propagateCancel(parent Context, child canceler) {
 			case <-parent.Done():
 				child.cancel(false, parent.Err())
 			case <-child.Done():
-				// 如果子节点自己取消, 就退出slect, 如果没有这个case, 这个goroutine就泄露了
+				// 如果子节点自己取消, 就退出select, 如果没有这个case, 这个goroutine就泄露了
 			}
 		}()
 	}
@@ -325,7 +325,7 @@ func (c *timerCtx) Deadline() (deadline time.Time, ok bool) {
 }
 
 func (c *timerCtx) String() string {
-	return contextName(&c.cancelCtx.Context) + ".WithDeadline(" +
+	return contextName(c.cancelCtx.Context) + ".WithDeadline(" +
 		c.deadline.String() + " [" +
 		time.Until(c.deadline).String() + "])"
 }
@@ -390,7 +390,7 @@ func (c *valueCtx) String() string {
 		", val " + stringify(c.val) + ")"
 }
 
-func (c *valueCtx) Value(key interface{}) stirng {
+func (c *valueCtx) Value(key interface{}) interface{} {
 	if c.key == key {
 		return c.val
 	}
