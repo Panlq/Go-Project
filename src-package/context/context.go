@@ -132,7 +132,7 @@ func propagateCancel(parent Context, child canceler) {
 		}
 		p.mu.Unlock()
 	} else {
-		// 当父上下文是自定义类型，实现了Context接口, 并在Done()方法返回了非空的管道时
+		// 当父上下文是自定义类型, 实现了Context接口, 并在Done()方法返回了非空的管道时
 		// 1. 运行一个新的goroutine, 监听praent.Done() 和child.Done
 		// 2. 当parent.Done() 关闭时, 调用取消child上下文
 		atomic.AddInt32(&goroutines, +1)
@@ -244,7 +244,7 @@ func contextName(c Context) string {
 	return reflectlite.TypeOf(c).String()
 }
 
-func (*cancelCtx) String() string {
+func (c *cancelCtx) String() string {
 	return contextName(c.Context) + ".WithCancel"
 }
 

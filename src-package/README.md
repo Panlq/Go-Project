@@ -1,6 +1,7 @@
 ## go src package learning
 
-- [x] context
+- [x] [context](https://github.com/golang/go/tree/master/src/context)
+- [ ] struct
 
 
 
