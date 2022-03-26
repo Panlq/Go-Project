@@ -1,7 +1,7 @@
 ## go src package learning
 
 - [x] [context](https://github.com/golang/go/tree/master/src/context)
-- [ ] struct
+- [ ] time
 
 
 
