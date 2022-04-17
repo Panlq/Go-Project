@@ -1,6 +1,6 @@
-## go build 常用技巧
+# go build 常用技巧
 
-### 1. 如何动态注入go程序的版本等信息？
+## 1. 如何动态注入go程序的版本等信息？
 
 有时候我们想在go程序中注入编译时间，编译的go版本(多人协同时可能go版本不同)，编译的处理器架构等信息，在进行发布。那一般怎么操作呢？在开源项目中我们可以看到很多这种样例，
 
@@ -172,7 +172,7 @@ GitCommit: master:4dd79e7
 GO Version: go version go1.17 linux/amd64
 ```
 
-### 2. 如何构建最小go可执行文件？
+## 2. 如何构建最小go可执行文件？
 
 在第一阶段中我们用以下这段编译命令，如何理解以下的各个参数？这么构建有什么好处？
 
@@ -202,7 +202,7 @@ CGO_ENABLED=0 GOOS=linux GOARCH=$goarch go build -a -ldflags "$flags" -o hello m
 
 
 
-### 3. 如何完全静态编译一个Go程序？
+## 3. 如何完全静态编译一个Go程序？
 
 在docker化的今天，我们一般都是只要一个可执行文件，且无引用其他第三方依赖。在golang中标准库`net` 会使用静态链接库， 依赖glibc等库，如果我们设置`CGO_ENABLED=1`  则编译的可执行文件在镜像内可能就会报错 
 
@@ -223,7 +223,7 @@ CGO_ENABLED=0 GOOS=linux GOARCH=$goarch go build -a -ldflags "$flags" -o hello m
 
 
 
-### 4. 命令
+## 4. 命令
 
 1. 查看golang支持交叉编译的架构
 
@@ -231,8 +231,9 @@ CGO_ENABLED=0 GOOS=linux GOARCH=$goarch go build -a -ldflags "$flags" -o hello m
 
 
 
-### reference
+## 5. reference
 
 1. [what-do-these-go-build-flags-mean-netgo-extldflags-lm-lstdc-static](https://stackoverflow.com/questions/37630274/what-do-these-go-build-flags-mean-netgo-extldflags-lm-lstdc-static)
 2. [鸟窝-创建最小的go镜像](https://colobu.com/2018/08/13/create-minimal-docker-image-for-go-applications/)
-3. [Golang -ldflags 的一个技巧 go version 信息注入](
+3. [Golang -ldflags 的一个技巧 go version 信息注入](https://ms2008.github.io/2018/10/08/golang-build-version/)
+
