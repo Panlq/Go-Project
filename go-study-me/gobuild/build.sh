@@ -1,8 +1,15 @@
 #!/usr/bin/env bash
 
-buildtime="$(date -u '+%Y-%m-%d %I:%M:%S%p')"
-BRANCH=`git rev-parse --abbrev-ref HEAD`
-COMMIT=`git rev-parse --short HEAD`
-GOVERSION=`go version`
-GOLDFLAGS="-s -w -X 'main.buildtime=$buildtime' -X 'main.branch=$BRANCH' -X 'main.commit=$COMMIT' -X 'main.goversion=$GOVERSION'"
-CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "$GOLDFLAGS" -o hello.exe main.go
+buildDate="$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+gitVersion=`git rev-parse --abbrev-ref HEAD`
+gitCommit=`git rev-parse --short HEAD`
+goVersion="$(go env GOVERSION)"
+Platform="$(go env GOOS)/$(go env GOARCH)"
+GOLDFLAGS="-s -w \
+    -X 'github.com/panlq/gobuild/version.buildDate=$buildDate' \
+    -X 'github.com/panlq/gobuild/version.gitCommit=$gitCommit' \
+    -X 'github.com/panlq/gobuild/version.gitVersion=$gitVersion' \
+    -X 'github.com/panlq/gobuild/version.goVersion=$goVersion' \
+    -X 'github.com/panlq/gobuild/version.platform=$Platform' "
+
+CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "$GOLDFLAGS" -o hello main.go
