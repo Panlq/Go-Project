@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -eux;
 buildDate="$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
-gitCommit=$(git rev-parse --short HEAD)
+gitCommit="$(git rev-parse --short HEAD)"
 goVersion="$(go version)"
 GOLDFLAGS="-s -w \
     -X 'github.com/panlq/gobuild/version.buildDate=$buildDate' \
