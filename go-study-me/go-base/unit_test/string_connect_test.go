@@ -5,13 +5,19 @@ import (
 	"fmt"
 	"strings"
 	"testing"
+
+	"github.com/gofrs/uuid"
 )
 
 var queryArgs []string
 
+func UUID() string {
+	return uuid.Must(uuid.NewV4()).String()
+}
+
 func init() {
 	for i := 0; i < 5000; i++ {
-		queryArgs = append(queryArgs, str.NewSeqID())
+		queryArgs = append(queryArgs, UUID())
 	}
 }
 
