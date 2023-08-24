@@ -1,6 +1,6 @@
 // split/split_test.go
 
-package split
+package unit_test
 
 import (
 	"fmt"
@@ -9,11 +9,11 @@ import (
 )
 
 func TestSplit(t *testing.T) {
-	got := Split("a:b:c", ":")       // 程序返回的结果
-	want := []string{"a", "b", "c"}  // 期望返回的结果
+	got := Split("a:b:c", ":")      // 程序返回的结果
+	want := []string{"a", "b", "c"} // 期望返回的结果
 	if !reflect.DeepEqual(want, got) {
 		// slice 不能直接比较, 借助反射包中方法比较
-		t.Errorf("excepted:%v, got:%v", want, got)   //测试失败输出错误提示
+		t.Errorf("excepted:%v, got:%v", want, got) // 测试失败输出错误提示
 	}
 }
 
@@ -25,18 +25,17 @@ func TestMultiSplit(t *testing.T) {
 		"sdfsdfd",
 	}
 	if !reflect.DeepEqual(want, got) {
-		t.Errorf("excepted:%v, got:%v", want, got)   //测试失败输出错误提示
+		t.Errorf("excepted:%v, got:%v", want, got) // 测试失败输出错误提示
 	}
 }
-
 
 // 使用测试组合并多个测试函数+切片
 func TestComSpilt(t *testing.T) {
 	// 定义一个测试用例类型
 	type test struct {
 		input string
-		sep string
-		want []string
+		sep   string
+		want  []string
 	}
 
 	// 定义一个存储测试用例的切片
@@ -50,12 +49,10 @@ func TestComSpilt(t *testing.T) {
 	for _, tc := range tests {
 		got := Split(tc.input, tc.sep)
 		if !reflect.DeepEqual(got, tc.want) {
-			t.Errorf("excepted:%#v, got:%#v", tc.want, got)   //测试失败输出错误提示
+			t.Errorf("excepted:%#v, got:%#v", tc.want, got) // 测试失败输出错误提示
 		}
 	}
 }
-
-
 
 // BenchmarkSplit ...
 // func BenchmarkSplit(b *testing.B) {
@@ -77,7 +74,6 @@ func TestComSpilt(t *testing.T) {
 // 	os.Exit(retCode)     // 退出测试
 // }
 
-
 // 测试集的Setup Teardown
 func setupTestCase(t *testing.T) func(t *testing.T) {
 	t.Log("执行测试之前的coding")
@@ -85,7 +81,6 @@ func setupTestCase(t *testing.T) func(t *testing.T) {
 		t.Log("执行测试的coding")
 	}
 }
-
 
 // 子测试的Setup Teardown
 func setupSubTestCase(t *testing.T) func(t *testing.T) {
@@ -95,14 +90,13 @@ func setupSubTestCase(t *testing.T) func(t *testing.T) {
 	}
 }
 
-
 // map + 子测试
 func TestSplitComMapWithSuntest(t *testing.T) {
 	// 定义一个测试用例类型
 	type test struct {
 		input string
-		sep string
-		want []string
+		sep   string
+		want  []string
 	}
 
 	tests := map[string]test{ // 测试用例使用map存储
@@ -117,12 +111,12 @@ func TestSplitComMapWithSuntest(t *testing.T) {
 
 	for name, tc := range tests {
 		t.Run(name, func(t *testing.T) {
-			teardownSubTest :=  setupSubTestCase(t)
+			teardownSubTest := setupSubTestCase(t)
 			defer teardownSubTest(t)
 			// 使用t.Run执行子测试
 			got := Split(tc.input, tc.sep)
 			if !reflect.DeepEqual(got, tc.want) {
-				t.Errorf("excepted:%#v, got:%#v", tc.want, got)   //测试失败输出错误提示
+				t.Errorf("excepted:%#v, got:%#v", tc.want, got) // 测试失败输出错误提示
 			}
 		})
 	}
@@ -130,7 +124,7 @@ func TestSplitComMapWithSuntest(t *testing.T) {
 
 // 示例函数
 func Example_Split() {
-    fmt.Println(Split("a:b:c", ":"))
+	fmt.Println(Split("a:b:c", ":"))
 	fmt.Println(Split("锅中有肉中有油中有菜", "中"))
 	// Output:
 	// [a b c]

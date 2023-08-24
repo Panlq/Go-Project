@@ -1,4 +1,4 @@
-package split
+package unit_test
 
 import (
 	"testing"
@@ -6,7 +6,7 @@ import (
 
 func TestFib(t *testing.T) {
 	var (
-		in = 7
+		in       = 7
 		expected = 13
 	)
 	actual := Fib(in)
@@ -36,7 +36,6 @@ func TestFib(t *testing.T) {
 // 		}
 // 	}
 // }
-
 
 // 基准测试函数
 func benchmarkFib(i int, b *testing.B) {
