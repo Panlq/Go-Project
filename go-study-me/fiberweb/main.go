@@ -3,6 +3,8 @@ package main
 import (
 	"time"
 
+	"github/panlq/gostd/fiberweb/upload"
+
 	"github.com/go-logr/logr"
 	"github.com/gofiber/fiber/v2"
 	fiberLog "github.com/gofiber/fiber/v2/middleware/logger"
@@ -38,32 +40,18 @@ func NewHttpServer(logger logr.Logger, cfg *Config) *HttpServer {
 }
 
 func main() {
-	app := fiber.New()
-	app.Get("/", func(c *fiber.Ctx) error {
-		return c.SendString("Hello, World!")
+	app := fiber.New(fiber.Config{
+		BodyLimit: fiber.DefaultBodyLimit,
+		Prefork:   false,
 	})
 
-	// parameters
-	// app.Get("/:value", func(c *fiber.Ctx) error {
-	// 	return c.SendString("value: " + c.Params("value"))
-	// })
+	// 文件上传相关路由
+	app.Get("/upload/check", upload.HandleCheck)
+	app.Post("/upload/chunk", upload.HandleUploadChunk)
+	app.Post("/upload/merge", upload.HandleMerge)
 
-	// options key
-	app.Get("/user/:name?", func(c *fiber.Ctx) error {
-		if c.Params("name") != "" {
-			return c.SendString("Hello " + c.Params("name"))
-		}
-
-		return c.SendString("Where is john?")
-	})
-
-	// static file
+	// 静态文件服务
 	app.Static("/", "./public")
-
-	// new error
-	app.Get("/error", func(c *fiber.Ctx) error {
-		return fiber.NewError(5500, "Custom error message")
-	})
 
 	app.Listen(":3080")
 }
